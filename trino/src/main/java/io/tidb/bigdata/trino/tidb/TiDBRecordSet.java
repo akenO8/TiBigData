@@ -49,7 +49,8 @@ public final class TiDBRecordSet extends Wrapper<RecordSetInternal> implements R
                 split.getAdditionalPredicate().map(Expressions::deserialize).orElse(null))
             .withTimestamp(timestamp.orElse(null))
             .withLimit(null)
-            .withQueryHandle(false)
+                // TODO : if here is false then select count(1) will error
+            .withQueryHandle(true)
             .build());
 
     this.columnHandles = columnHandles;

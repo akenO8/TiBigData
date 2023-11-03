@@ -26,10 +26,13 @@ import io.trino.spi.connector.ConnectorSplitManager;
 import io.trino.spi.connector.ConnectorSplitSource;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTransactionHandle;
+import io.trino.spi.connector.Constraint;
+import io.trino.spi.connector.DynamicFilter;
 import io.trino.spi.connector.FixedSplitSource;
+
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public final class TiDBSplitManager extends Wrapper<SplitManagerInternal>
     implements ConnectorSplitManager {
@@ -41,13 +44,14 @@ public final class TiDBSplitManager extends Wrapper<SplitManagerInternal>
 
   @Override
   public ConnectorSplitSource getSplits(
-      ConnectorTransactionHandle transaction,
-      ConnectorSession session,
-      ConnectorTableHandle table,
-      SplitSchedulingStrategy splitSchedulingStrategy) {
+          ConnectorTransactionHandle transaction,
+          ConnectorSession session,
+          ConnectorTableHandle table,
+          DynamicFilter dynamicFilter,
+          Constraint constraint) {
     TiDBTableHandle tableHandle = (TiDBTableHandle) table;
     List<SplitInternal> splits = getInternal().getSplits(tableHandle.getInternal());
     return new FixedSplitSource(
-        splits.stream().map(s -> new TiDBSplit(s, Optional.empty())).collect(toImmutableList()));
+            splits.stream().map(s -> new TiDBSplit(s, Optional.empty())).collect(toImmutableList()));
   }
 }

@@ -16,10 +16,12 @@
 
 package io.tidb.bigdata.trino.tidb;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static io.tidb.bigdata.trino.tidb.TiDBConfig.PRIMARY_KEY;
 import static io.tidb.bigdata.trino.tidb.TiDBConfig.SESSION_SNAPSHOT_TIMESTAMP;
 import static io.tidb.bigdata.trino.tidb.TiDBConfig.SESSION_WRITE_MODE;
 import static io.tidb.bigdata.trino.tidb.TiDBConfig.UNIQUE_KEY;
+import static io.trino.spi.transaction.IsolationLevel.READ_UNCOMMITTED;
 import static io.trino.spi.transaction.IsolationLevel.REPEATABLE_READ;
 import static io.trino.spi.transaction.IsolationLevel.checkConnectorSupports;
 import static java.util.Objects.requireNonNull;
@@ -31,12 +33,13 @@ import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorMetadata;
 import io.trino.spi.connector.ConnectorPageSinkProvider;
 import io.trino.spi.connector.ConnectorRecordSetProvider;
+import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorSplitManager;
 import io.trino.spi.connector.ConnectorTransactionHandle;
 import io.trino.spi.session.PropertyMetadata;
 import io.trino.spi.transaction.IsolationLevel;
 import java.util.List;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public final class TiDBConnector implements Connector {
 
@@ -66,15 +69,16 @@ public final class TiDBConnector implements Connector {
   }
 
   @Override
-  public ConnectorTransactionHandle beginTransaction(
-      IsolationLevel isolationLevel, boolean readOnly) {
-    checkConnectorSupports(REPEATABLE_READ, isolationLevel);
-    return new TiDBTransactionHandle();
+  public ConnectorMetadata getMetadata(ConnectorSession session, ConnectorTransactionHandle transactionHandle)
+  {
+    return metadata;
   }
 
   @Override
-  public ConnectorMetadata getMetadata(ConnectorTransactionHandle transactionHandle) {
-    return metadata;
+  public ConnectorTransactionHandle beginTransaction(IsolationLevel isolationLevel, boolean readOnly, boolean autoCommit)
+  {
+    checkConnectorSupports(REPEATABLE_READ, isolationLevel);
+    return new TiDBTransactionHandle();
   }
 
   @Override

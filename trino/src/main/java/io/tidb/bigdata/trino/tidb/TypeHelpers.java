@@ -21,12 +21,12 @@ import static io.airlift.slice.Slices.wrappedBuffer;
 import static io.tidb.bigdata.trino.tidb.TypeHelper.doubleHelper;
 import static io.tidb.bigdata.trino.tidb.TypeHelper.longHelper;
 import static io.tidb.bigdata.trino.tidb.TypeHelper.sliceHelper;
+import static io.tidb.bigdata.trino.tidb.UnscaledDecimal128Arithmetic.decodeUnscaledValue;
 import static io.trino.spi.StandardErrorCode.NOT_SUPPORTED;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
 import static io.trino.spi.type.DateType.DATE;
 import static io.trino.spi.type.DecimalType.createDecimalType;
-import static io.trino.spi.type.Decimals.decodeUnscaledValue;
 import static io.trino.spi.type.Decimals.encodeScaledValue;
 import static io.trino.spi.type.Decimals.encodeShortScaledValue;
 import static io.trino.spi.type.DoubleType.DOUBLE;
@@ -99,10 +99,10 @@ public final class TypeHelpers {
     return sliceHelper(
         tidbType,
         decimalType,
-        (cursor, columnIndex) -> encodeScaledValue(cursor.getBigDecimal(columnIndex), scale),
+        (cursor, columnIndex) -> utf8Slice(encodeScaledValue(cursor.getBigDecimal(columnIndex), scale).toString()),
         s ->
             new BigDecimal(
-                decodeUnscaledValue(s), scale, new MathContext(decimalType.getPrecision())));
+                    decodeUnscaledValue(s), scale, new MathContext(decimalType.getPrecision())));
   }
 
   public static TypeHelper varcharHelper(DataType tidbType, VarcharType varcharType) {

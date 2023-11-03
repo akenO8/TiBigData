@@ -15,8 +15,8 @@
   <url>https://github.com/pingcap-incubator/TiBigData</url>
 
   <properties>
-    <dep.trino.version>359</dep.trino.version>
-    <dep.airlift.version>207</dep.airlift.version>
+    <dep.trino.version>422</dep.trino.version>
+    <dep.airlift.version>234</dep.airlift.version>
   </properties>
 
   <dependencies>
