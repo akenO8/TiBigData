@@ -17,42 +17,42 @@
 package io.tidb.bigdata.trino.tidb;
 
 import io.trino.spi.connector.ColumnHandle;
-import io.trino.spi.connector.ConnectorHandleResolver;
+//import io.trino.spi.connector.ConnectorHandleResolver;
 import io.trino.spi.connector.ConnectorInsertTableHandle;
 import io.trino.spi.connector.ConnectorOutputTableHandle;
 import io.trino.spi.connector.ConnectorSplit;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTransactionHandle;
 
-public final class TiDBHandleResolver implements ConnectorHandleResolver {
-
-  @Override
-  public Class<? extends ConnectorTableHandle> getTableHandleClass() {
-    return TiDBTableHandle.class;
-  }
-
-  @Override
-  public Class<? extends ColumnHandle> getColumnHandleClass() {
-    return TiDBColumnHandle.class;
-  }
-
-  @Override
-  public Class<? extends ConnectorSplit> getSplitClass() {
-    return TiDBSplit.class;
-  }
-
-  @Override
-  public Class<? extends ConnectorTransactionHandle> getTransactionHandleClass() {
-    return TiDBTransactionHandle.class;
-  }
-
-  @Override
-  public Class<? extends ConnectorOutputTableHandle> getOutputTableHandleClass() {
-    return TiDBTableHandle.class;
-  }
-
-  @Override
-  public Class<? extends ConnectorInsertTableHandle> getInsertTableHandleClass() {
-    return TiDBTableHandle.class;
-  }
-}
+//public final class TiDBHandleResolver implements ConnectorHandleResolver {
+//
+//  @Override
+//  public Class<? extends ConnectorTableHandle> getTableHandleClass() {
+//    return TiDBTableHandle.class;
+//  }
+//
+//  @Override
+//  public Class<? extends ColumnHandle> getColumnHandleClass() {
+//    return TiDBColumnHandle.class;
+//  }
+//
+//  @Override
+//  public Class<? extends ConnectorSplit> getSplitClass() {
+//    return TiDBSplit.class;
+//  }
+//
+//  @Override
+//  public Class<? extends ConnectorTransactionHandle> getTransactionHandleClass() {
+//    return TiDBTransactionHandle.class;
+//  }
+//
+//  @Override
+//  public Class<? extends ConnectorOutputTableHandle> getOutputTableHandleClass() {
+//    return TiDBTableHandle.class;
+//  }
+//
+//  @Override
+//  public Class<? extends ConnectorInsertTableHandle> getInsertTableHandleClass() {
+//    return TiDBTableHandle.class;
+//  }
+//}

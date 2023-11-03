@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.tikv.common.meta.TiTimestamp;
 

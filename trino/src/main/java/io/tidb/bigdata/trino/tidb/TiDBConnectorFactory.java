@@ -25,7 +25,6 @@ import io.airlift.json.JsonModule;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorContext;
 import io.trino.spi.connector.ConnectorFactory;
-import io.trino.spi.connector.ConnectorHandleResolver;
 import java.util.Map;
 
 public final class TiDBConnectorFactory implements ConnectorFactory {
@@ -33,11 +32,6 @@ public final class TiDBConnectorFactory implements ConnectorFactory {
   @Override
   public String getName() {
     return "tidb";
-  }
-
-  @Override
-  public ConnectorHandleResolver getHandleResolver() {
-    return new TiDBHandleResolver();
   }
 
   @Override
@@ -50,7 +44,7 @@ public final class TiDBConnectorFactory implements ConnectorFactory {
           new Bootstrap(new JsonModule(), new TiDBModule(catalogName, context.getTypeManager()));
 
       Injector injector =
-          app.strictConfig()
+          app
               .doNotInitializeLogging()
               .setRequiredConfigurationProperties(config)
               .initialize();

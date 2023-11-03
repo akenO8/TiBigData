@@ -27,6 +27,7 @@ import io.trino.spi.connector.ColumnMetadata;
 import io.trino.spi.connector.ConnectorInsertTableHandle;
 import io.trino.spi.connector.ConnectorOutputTableHandle;
 import io.trino.spi.connector.ConnectorPageSink;
+import io.trino.spi.connector.ConnectorPageSinkId;
 import io.trino.spi.connector.ConnectorPageSinkProvider;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorTransactionHandle;
@@ -34,25 +35,20 @@ import io.trino.spi.type.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public class TiDBPageSinkProvider implements ConnectorPageSinkProvider {
 
   @Inject private TiDBMetadata metadata;
 
   @Override
-  public ConnectorPageSink createPageSink(
-      ConnectorTransactionHandle transactionHandle,
-      ConnectorSession session,
-      ConnectorOutputTableHandle outputTableHandle) {
+  public ConnectorPageSink createPageSink(ConnectorTransactionHandle transactionHandle, ConnectorSession session, ConnectorOutputTableHandle outputTableHandle, ConnectorPageSinkId pageSinkId) {
     return createTiDBPageSink(session, (TiDBTableHandle) outputTableHandle);
   }
 
   @Override
   public ConnectorPageSink createPageSink(
-      ConnectorTransactionHandle transactionHandle,
-      ConnectorSession session,
-      ConnectorInsertTableHandle insertTableHandle) {
+          ConnectorTransactionHandle transactionHandle, ConnectorSession session, ConnectorInsertTableHandle insertTableHandle, ConnectorPageSinkId pageSinkId) {
     return createTiDBPageSink(session, (TiDBTableHandle) insertTableHandle);
   }
 

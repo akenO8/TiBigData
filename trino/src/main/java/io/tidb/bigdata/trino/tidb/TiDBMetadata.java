@@ -40,6 +40,7 @@ import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTableMetadata;
 import io.trino.spi.connector.ConnectorTableProperties;
+import io.trino.spi.connector.RetryMode;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.connector.SchemaTablePrefix;
 import io.trino.spi.security.TrinoPrincipal;
@@ -51,7 +52,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public final class TiDBMetadata extends Wrapper<MetadataInternal> implements ConnectorMetadata {
 
@@ -79,11 +80,6 @@ public final class TiDBMetadata extends Wrapper<MetadataInternal> implements Con
         .getTableHandle(tableName.getSchemaName(), tableName.getTableName())
         .map(TiDBTableHandle::new)
         .orElse(null);
-  }
-
-  @Override
-  public boolean usesLegacyTableLayouts() {
-    return false;
   }
 
   @Override
@@ -220,13 +216,13 @@ public final class TiDBMetadata extends Wrapper<MetadataInternal> implements Con
             ignoreExisting);
   }
 
-  @Override
-  public void dropTable(ConnectorSession session, ConnectorTableHandle tableHandle) {
-    TiDBTableHandle handle = (TiDBTableHandle) tableHandle;
-    String schemaName = handle.getSchemaName();
-    String tableName = handle.getTableName();
-    getInternal().dropTable(schemaName, tableName, true);
-  }
+//  @Override
+//  public void dropTable(ConnectorSession session, ConnectorTableHandle tableHandle) {
+//    TiDBTableHandle handle = (TiDBTableHandle) tableHandle;
+//    String schemaName = handle.getSchemaName();
+//    String tableName = handle.getTableName();
+//    getInternal().dropTable(schemaName, tableName, true);
+//  }
 
   @Override
   public boolean schemaExists(ConnectorSession session, String schemaName) {
@@ -242,10 +238,10 @@ public final class TiDBMetadata extends Wrapper<MetadataInternal> implements Con
     getInternal().createDatabase(schemaName, true);
   }
 
-  @Override
-  public void dropSchema(ConnectorSession session, String schemaName) {
-    getInternal().dropDatabase(schemaName, true);
-  }
+//  @Override
+//  public void dropSchema(ConnectorSession session, String schemaName, boolean cascade) {
+//    getInternal().dropDatabase(schemaName, true);
+//  }
 
   @Override
   public void renameTable(
@@ -298,7 +294,7 @@ public final class TiDBMetadata extends Wrapper<MetadataInternal> implements Con
 
   @Override
   public ConnectorInsertTableHandle beginInsert(
-      ConnectorSession session, ConnectorTableHandle tableHandle, List<ColumnHandle> columns) {
+      ConnectorSession session, ConnectorTableHandle tableHandle, List<ColumnHandle> columns, RetryMode retryMode) {
     return (TiDBTableHandle) tableHandle;
   }
 

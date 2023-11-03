@@ -18,7 +18,7 @@ package io.tidb.bigdata.trino.tidb;
 
 import io.tidb.bigdata.tidb.ClientSession;
 import io.tidb.bigdata.tidb.Wrapper;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public final class TiDBSession extends Wrapper<ClientSession> {
 
